@@ -1,0 +1,29 @@
+@import"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+.active{background-color:#111111 }
+.active{display:block}
+.active{color:#777}
+.left{margin-left:-10px}
+.left{padding:0 5px;margin-left:-3px}
+.right{padding:0 5px;margin-left:3px}
+.right{margin-left:10px}
+.navpersonalitem{
+	background-color:#000000
+
+}
+.navpersonal{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index:9999;
+}
+
+.carouselTopSpace{
+  padding-top: 45px;
+}
+.pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+
+.carouselBottomSpace{
+  padding-bottom: 80px;
+}

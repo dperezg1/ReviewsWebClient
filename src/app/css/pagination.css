@@ -1,0 +1,103 @@
+
+
+a {
+
+  border: 0; outline: 0;
+}
+
+.pagination {
+  text-align: center;
+  margin: 20px
+}
+.pagination a, .pagination strong {
+  background: #111111;
+  display: inline-block;
+  margin-right: 3px;
+  padding: 4px 12px;
+  text-decoration: none;
+  line-height: 1.5em;
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.pagination a:hover {
+  background-color: #BEBEBE;
+  color: #fff;
+}
+.pagination a:active {
+  background: rgba(190, 190, 190, 0.75);
+}
+.pagination .strong {
+  color: #fff;
+  background-color: #3e4249;
+  font-family: Georgia,"Times New Roman",serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 22px;
+  margin: 0;
+}
+
+.innerpagination{
+  display: table;
+  margin: 0 auto;
+}
+
+#searchshare {
+  float: right;
+  margin-top: 9px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.searchshare {
+  padding: 5px 0;
+  width: 230px;
+  height: 30px;
+  position: relative;
+  left: 0px;
+  float: left;
+  line-height: 22px;
+  margin-right: 0px;
+}
+
+.searchshare .inputshare {
+  position: absolute;
+  width: 0px;
+  float: Left;
+  margin-left: 200px;
+  -webkit-transition: all 0.7s ease-in-out;
+  -moz-transition: all 0.7s ease-in-out;
+  -o-transition: all 0.7s ease-in-out;
+  transition: all 0.7s ease-in-out;
+  height: 30px;
+  line-height: 18px;
+  padding: 0 2px 0 2px;
+  border-radius:1px;
+}
+footer {
+  position: fixed;
+  height: 80px;
+  bottom: 0;
+  width: 100%;
+}
+.searchshare:hover .inputshare, .searchshare .inputshare:focus {
+  width: 200px;
+  margin-left: 0px;
+  margin-right: 20px;
+}
+
+.btnshare {
+  height: 30px;
+  position: absolute;
+  right: 0;
+  top: 5px;
+  border-radius:1px;
+  margin-right: 10px;
+}
+
+.userFiles {
+  padding-bottom: 35px;
+  border-bottom: 35px;
+}
+

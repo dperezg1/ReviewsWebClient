@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+    <meta charset="UTF-8">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-fixed-top bg-primary py-3 navpersonal">
+        <div class="container" >
+          <div class=" collapse navbar-collapse col-xs-1 col-md-1 col-lg-1">
+            <a class="navbar-brand text-white" (click)="home()"> Home </a>
+          </div>
+
+        <div class="collapse navbar-collapse col-xs-6 col-md-6 col-lg-6" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li *ngIf="isLogged" class="nav-item navbuttons dropdown">
+                <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown" href="#">My Account</a>
+                <ul class="dropdown-menu back">
+                  <li ><a data-toggle="modal" data-target="#usernameModal" class="text-white">Change Username</a></li>
+                  <li ><a data-toggle="modal" data-target="#passwordModal" class="text-white">Change Password</a></li>
+                  <li ><a (click)="openConfirmDeleteAcc()" class="text-white">Delete My Account</a></li>
+                </ul>
+              </li>
+              <li *ngIf="isLogged" class="nav-item navbuttons dropdown">
+                <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown">Content</a>
+                <ul class="dropdown-menu back">
+                  <li><a (click)="myContent()" id="myContent" class="text-white" >My Content</a></li>
+                  <li><a id="upload" class="text-white"  data-toggle="modal" data-target="#uploadModal" >Upload</a></li>
+                  <li><a id="sharedWithMe" (click)="contentSharedWithMe()" class=" text-white " >Shared with me</a></li>
+                </ul>
+              </li>
+              <li class="nav-item navbuttons dropdown">
+                <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown">Genre</a>
+                <ul class="dropdown-menu back">
+                  <li *ngFor="let genre of genres"><a (click)="searchByGenre(genre)" class="text-white">{{genre}}</a></li>
+                </ul>
+              </li>
+                </ul>
+
+        </div>
+          <div class="nav navbar-right col-xs-5 col-md-5 col-lg-5">
+            <ul class="nav ">
+              <li class="searchField">
+                <input #searchTerm type="text" class="form-control nav-item navbuttons searcher " placeholder="Search on all movies">
+              </li>
+              <li >
+                <button type="submit" (click)="search(searchTerm.value)" class="btn btn-primary nav-item navbuttons">Submit</button>
+              </li>
+              <li>
+                <a href="http://proyecto17api.dis.eafit.edu.co/login" id="loginButton" class="btn btn-success nav-item navbuttons">Log In</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+    </nav>
+
+
+
+<br>
+
+<body class="carouselBottomSpace">
+<main class="container carouselTopSpace">
+    <section class="movies" id="movies">
+       <br>
+       <br>
+        <div class="row" id="row1">
+            <div *ngFor="let movie1 of showingMoviesRow1"  class="col-lg-3 col-md-4 col-sm-6">
+                <article class="card" [style.height]="divHeight">
+                    <header class="title-header">
+                        <h3>{{movie1.title}}</h3>
+                    </header>
+                    <div class="card-block">
+                        <div class="img-card">
+                            <img src={{movie1.imageUrl}} alt="Movie" class="w-100" />
+                        </div>
+                        <p class="tagline card-text text-xs-center">Genre: {{movie1.genre}}</p>
+                        <p class="tagline card-text text-xs-center">Director: {{movie1.director}}</p>
+                        <p class="tagline card-text text-xs-center">Year: {{movie1.year}}</p>
+                        <p class="tagline card-text text-xs-center">Size: {{movie1.size}}</p>
+                        <a class="btn btn-primary btn-block text-white" href="http://proyecto17api.dis.eafit.edu.co/video?filename={{movie1.filename}}" target="_blank"  ><i class="fa fa-eye"></i> Watch Now</a>
+                        <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getMovieToEdit(movie1,movie1.genre)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+                        <a *ngIf="myContents" (click)="saveMovieToDeleteAndOpenConfirmModal(movie1)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+                        <div *ngIf="myContents" class="searchshare">
+                          <input #addUser id="{{movie1._id}}" [ngModel]="searched1"  [ngModelOptions]="{standalone: true}"  type="text" class="inputshare form-control input-sm" maxlength="64" placeholder="Username" />
+                          <button type="submit" (click)="shareWith(addUser.value,movie1)"  class="btn btnshare btn-primary btn-sm">Share</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+      <br>
+
+
+
+
+      <br>
+        <div class="row" id="row2">
+          <div *ngFor="let movie2 of showingMoviesRow2" class="col-lg-3 col-md-4 col-sm-6">
+            <article class="card" [style.height]="divHeight" >
+              <header class="title-header">
+                <h3>{{movie2.title}}</h3>
+              </header>
+              <div class="card-block">
+                <div class="img-card">
+                  <img src={{movie2.imageUrl}} alt="Movie" class="w-100" />
+                </div>
+                <p class="tagline card-text text-xs-center">Genre: {{movie2.genre}}</p>
+                <p class="tagline card-text text-xs-center">Director: {{movie2.director}}</p>
+                <p class="tagline card-text text-xs-center">Year: {{movie2.year}}</p>
+                <p class="tagline card-text text-xs-center">Size: {{movie2.size}}</p>
+                <a class="btn btn-primary btn-block text-white" href="http://proyecto17api.dis.eafit.edu.co/video?filename={{movie2.filename}}" target="_blank"  ><i class="fa fa-eye"></i> Watch Now</a>
+                <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getMovieToEdit(movie2,movie2.genre)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+                <a *ngIf="myContents" (click)="saveMovieToDeleteAndOpenConfirmModal(movie2)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+                <div *ngIf="myContents" class="searchshare">
+                  <input #addUser2 id="{{movie2._id}}" [ngModel]="searched2"  [ngModelOptions]="{standalone: true}"  type="text" class="inputshare form-control input-sm" maxlength="64" placeholder="Username" />
+                  <button type="submit" (click)="shareWith(addUser2.value,movie2)"  class="btn btnshare btn-primary btn-sm">Share</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+    </section>
+</main>
+<br>
+</body>
+
+
+<!-- Trigger the modal with a button -->
+
+<footer>
+
+    <div class="container-fluid bg-primary py-3">
+      <div class="innerpagination">
+      <div class="pagination" >
+        &nbsp;<a (click)="prevPage()" class="pagerButton">«</a>
+        <a (click)="changePage(1)" id="1" class="strong">1</a>
+        <a  *ngFor="let page of pager" (click)="changePage(page)"  id="{{page}}" class="pagerButton">{{page}}</a> <!-- pagerButton-->
+
+        &nbsp;<a (click)="nextPage()" class="pagerButton">»</a>
+      </div>
+      </div>
+    </div>
+</footer>
+<!--/.footer-->
+<!--/.footer-bottom-->
+
+<div #loginModal class="modal fade modal-login" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button type="button" id="closeLoginModal" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="loginForm" method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="username" class="control-label">Username</label>
+                <input #username type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="password" class="control-label">Password</label>
+                <input #password type="password" class="form-control" id="password" name="password" value="" required="" title="Please enter your password">
+                <span class="help-block"></span>
+              </div>
+              <div id="loginErrorMsg" class="alert alert-error hide">¡Usuario o contraseaña incorrectos!</div>
+              <br>
+              <button type="submit" (click)="login(username.value,password.value)" class="btn btn-success btn-block navbuttons">Login</button>
+              <br>
+              <button type="button"  data-toggle="modal" data-target="#registerModal" data-dismiss="modal" href="" class="btn btn-primary btn-block navbuttons">Register now!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #registerModal  class="modal fade modal-login" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button id="registerModalCloser" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="loginForm1"  method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="username1" class="control-label">Username</label>
+                <input #username1 type="text" class="form-control" id="username1" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="password1" class="control-label">Password</label>
+                <input #password1 type="password" class="form-control" id="password1" name="password" value="" required="" title="Please enter your password">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="password2" class="control-label">Confirm password</label>
+                <input #password2 type="password" class="form-control" id="password2" name="password" value="" required="" title="Please enter your password">
+                <span class="help-block"></span>
+              </div>
+              <div id="loginErrorMsg1" class="alert alert-error hide">Wrong username or password</div>
+              <br>
+              <button type="submit"  (click)="register(username1.value,password1.value,password2.value)"   class="btn btn-success btn-block navbuttons">Create Account</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #uploadModal class="modal fade upload" id="uploadModal">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button id="uploadCloser" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="createForm" method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="title" class="control-label">Title</label>
+                <input #title type="text" class="form-control" id="title" name="title" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="year" class="control-label">Year</label>
+                <input #year type="text" class="form-control" id="year" name="year" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="director" class="control-label">Director</label>
+                <input #director type="text" class="form-control" id="director" name="director" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="tamaño" class="control-label">File Size</label>
+                <input #size type="text" class="form-control" id="tamaño" name="tamaño" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="url" class="control-label">Image Url</label>
+                <input #url type="text" class="form-control" id="url" name="url" value="" required="" title="URL of the cover image (300x250)" placeholder="">
+                <span class="help-block"></span>
+              </div>
+
+
+
+              <div class="form-group">
+                <br>
+                <select #selectGenre  id="selectGenre" name="selectbasic" class="form-control"> <!--(change)=""-->
+                  <option *ngFor="let genre of genres" value={{genre}}>{{genre}}</option>
+                  <option selected value="predefinido"><B>Genre</B></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <br>
+                <select #selectVisibility  id="selectVisibility" name="selectbasic" class="form-control"> <!--(change)=""-->
+                  <option *ngFor="let visible of visibility" value={{visible}}>{{visible}}</option>
+                  <option selected value="predefinido"><B>Visibility</B></option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label  for="userFile"></label>
+                <input type="file" id="userFile" class="form-control userFiles" name="userFile" ng2FileSelect [uploader]="uploader" />
+              </div>
+
+              <div id="loginErrorMsg2" class="alert alert-error hide">¡Something went wrong!</div>
+              <br>
+              <div id="loginErrorMsg6" class="alert alert-error hide">Please wait until the video is uploaded.</div>
+              <button type="submit" id="createButton" *ngFor="let item of uploader.queue" (click)="createMovie(item,title.value,year.value,director.value,size.value,url.value,selectGenre.value,selectVisibility.value)"  class="btn btn-success btn-block navbuttons">Upload</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div #editModal class="modal fade upload" id="editModal">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button id="uploadCloser1" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="createForm1" method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="title" class="control-label">Title</label>
+                <input [(ngModel)]="editingtitle" [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="title1" name="title" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="year" class="control-label">Year</label>
+                <input [(ngModel)]="editingyear"  [ngModelOptions]="{standalone: true}"  type="text" class="form-control" id="year1" name="year" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="director" class="control-label">Director</label>
+                <input [(ngModel)]="editingdirector"  [ngModelOptions]="{standalone: true}"  type="text" class="form-control" id="director1" name="director" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="tamaño" class="control-label">File Size</label>
+                <input [(ngModel)]="editingsize" [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="tamaño1" name="tamaño" value="" required="" title="Please enter you username" placeholder="">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="url" class="control-label">Image Url</label>
+                <input [(ngModel)]="editingurl" [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="url1" name="url" value="" required="" title="URL of the cover image (300x250)" placeholder="">
+                <span class="help-block"></span>
+              </div>
+
+
+
+              <div class="form-group">
+                <br>
+                <select [(ngModel)]="editinggenre" [ngModelOptions]="{standalone: true}"  id="selectGenre1" name="selectbasic" class="form-control"> <!--(change)=""-->
+                  <option *ngFor="let genre of genres" value={{genre}}>{{genre}}</option>
+                  <option selected value="predefinido"><B>Genre</B></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <br>
+                <select [(ngModel)]="editingvisibility" [ngModelOptions]="{standalone: true}"   id="selectVisibility1" name="selectbasic" class="form-control"> <!--(change)=""-->
+                  <option *ngFor="let visible of visibility" value={{visible}}>{{visible}}</option>
+                  <option selected value="predefinido"><B>Visibility</B></option>
+                </select>
+              </div>
+
+              <div id="loginErrorMsg21" class="alert alert-error hide">¡Something went wrong!</div>
+              <br>
+              <button type="submit" (click)="editMovie()"  class="btn btn-success btn-block navbuttons">Update</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #successModal id="successModal" class="modal fade in hide" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title"><B>Shared Successfully</B></h4>
+      </div>
+      <div class="modal-footer text-center">
+        <div class="form-inline text-center">
+          <button class="btn btn-success" (click)="closeSuccessModal()">Ok</button>
+        </div>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dalog -->
+</div><!-- /.modal -->
+<div id="errorModal" class="modal fade in hide errorModal" style="display:block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center modal-header-danger">
+        <h4 class="modal-title">This user doesn't exist.</h4>
+      </div>
+      <div class="modal-footer text-center">
+        <div class="form-inline text-center">
+            <button (click)="closeErrorModal()" class="btn btn-danger btn-md">Ok</button>
+
+        </div>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div #confirmModal id="confirmModal" class="modal fade in hide errorModal" style="display:block;">>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title"><B>Do you agree to delete this movie?</B></h4>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline">
+          <button class="btn btn-danger" (click)="closeConfirmModal()" >Cancelar</button>
+          <button class="btn btn-primary" (click)="deleteThisMovie()" data-dismiss="modal"><span class="fa fa-trash"></span> Confirmar</button>
+        </div>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dalog -->
+</div><!-- /.modal -->
+
+<div #confirmModal id="confirmAccountModal" class="modal fade in hide errorModal" style="display:block;">>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title"><B>do you want to delete your account?</B></h4>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline">
+          <button class="btn btn-danger" (click)="closeconfirmAccountModal()" >Cancelar</button>
+          <button class="btn btn-primary" (click)="deleteThisAccount()" data-dismiss="modal"><span class="fa fa-trash"></span> Confirmar</button>
+        </div>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dalog -->
+</div><!-- /.modal -->
+
+<div #usernameModal class="modal fade modal-login" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button type="button" id="usernameModalCloser" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="loginForm3" method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="usernamee" class="control-label">New Username:</label>
+                <input #usernamee type="text" class="form-control" id="usernamee" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
+                <span class="help-block"></span>
+              </div>
+              <div id="loginErrorMsg3" class="alert alert-error hide">This username is already taken!</div>
+              <br>
+              <button type="submit" (click)="changeUsername(usernamee.value)" class="btn btn-success btn-block navbuttons">Update</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div #passwordModal class="modal fade modal-login" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-content">
+
+    <div class="modal-body">
+      <button type="button" id="closePasswordModal" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="well">
+            <form id="loginForm4" method="POST" action="" novalidate="novalidate">
+              <div class="form-group">
+                <label for="password" class="control-label">New Password</label>
+                <input #password4 type="password" class="form-control" id="password4" name="password" value="" required="" title="Please enter your password">
+                <span class="help-block"></span>
+              </div>
+              <div class="form-group">
+                <label for="password" class="control-label">Confirm Password</label>
+                <input #password5 type="password" class="form-control" id="password5" name="password" value="" required="" title="Please enter your password">
+                <span class="help-block"></span>
+              </div>
+              <div id="loginErrorMsg4" class="alert alert-error hide">The password doesn't match!</div>
+              <br>
+              <button type="submit" (click)="changePassword(password4.value,password5.value)" class="btn btn-success btn-block navbuttons">Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</html>
