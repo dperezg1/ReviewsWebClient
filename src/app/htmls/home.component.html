@@ -22,7 +22,7 @@
               <li class="nav-item navbuttons dropdown">
                 <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown">Categories</a>
                 <ul class="dropdown-menu back">
-                  <li *ngFor="let category of categories"><a (click)="searchByGenre(category)" class="text-white">{{category}}</a></li>
+                  <li *ngFor="let category of categories"><a (click)="searchByCategory(category)" class="text-white">{{category}}</a></li>
                 </ul>
               </li>
                 </ul>
@@ -67,8 +67,8 @@
                         <p class="tagline card-text text-xs-center">Category: {{movie1.category}}</p>
                         <p class="tagline card-text text-xs-center">verified: {{movie1.verifiedUser}}</p>
                         <a class="btn btn-primary btn-block text-white" target="_blank"  ><i class="fa fa-eye"></i> Watch Now</a>
-                        <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getMovieToEdit(movie1)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
-                        <a *ngIf="myContents" (click)="saveMovieToDeleteAndOpenConfirmModal(movie1)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+                        <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie1)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+                        <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie1)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
                     </div>
                 </article>
             </div>
@@ -92,8 +92,8 @@
               <p class="tagline card-text text-xs-center">Category: {{movie2.category}}</p>
               <p class="tagline card-text text-xs-center">verified: {{movie2.verifiedUser}}</p>
               <a class="btn btn-primary btn-block text-white" target="_blank"  ><i class="fa fa-eye"></i> Watch Now</a>
-              <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getMovieToEdit(movie2)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
-              <a *ngIf="myContents" (click)="saveMovieToDeleteAndOpenConfirmModal(movie2)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+              <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie2)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+              <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie2)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
             </div>
           </article>
         </div>
@@ -161,7 +161,7 @@
 
               <div id="loginErrorMsg2" class="alert alert-error hide">¡Something went wrong!</div>
               <br>
-              <button type="submit" id="createButton" (click)="createMovie(product.value,link.value,selectBrand.value,selectCategory.value)"  class="btn btn-success btn-block navbuttons">Upload</button>
+              <button type="submit" id="createButton" (click)="createReview(product.value,link.value,selectBrand.value,selectCategory.value)"  class="btn btn-success btn-block navbuttons">Upload</button>
             </form>
           </div>
         </div>
@@ -203,7 +203,7 @@
 
               <div id="loginErrorMsg21" class="alert alert-error hide">¡Something went wrong!</div>
               <br>
-              <button type="submit" (click)="editMovie()"  class="btn btn-success btn-block navbuttons">Update</button>
+              <button type="submit" (click)="editReview()"  class="btn btn-success btn-block navbuttons">Update</button>
 
             </form>
           </div>
@@ -240,7 +240,7 @@
       <div class="modal-footer">
         <div class="form-inline">
           <button class="btn btn-danger" (click)="closeConfirmModal()" >Cancelar</button>
-          <button class="btn btn-primary" (click)="deleteThisMovie()" data-dismiss="modal"><span class="fa fa-trash"></span> Confirmar</button>
+          <button class="btn btn-primary" (click)="deleteReview()" data-dismiss="modal"><span class="fa fa-trash"></span> Confirmar</button>
         </div>
       </div>
 

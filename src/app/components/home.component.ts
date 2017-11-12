@@ -18,8 +18,6 @@ export class HomeComponent implements  OnInit {
     @Input() public editingproduct: string;
     @Input() public editingbrand: string;
     @Input() public editingcategory: string;
-    public searched2: string;
-    public searched1: string;
     public categories: string[];
     public brands: string[];
     public showingMoviesRow1: Review[];
@@ -67,13 +65,13 @@ export class HomeComponent implements  OnInit {
         })
     }
 
-    saveMovieToDeleteAndOpenConfirmModal(review: Review): void {
+    saveReviewToDeleteAndOpenConfirmModal(review: Review): void {
         this.reviewToDelete = review;
         document.getElementById("confirmModal").className = ("modal in");
     }
 
 
-    deleteThisMovie(): void {
+    deleteReview(): void {
         let review = this.reviewToDelete;
         this.reviewService.deleteReview(review._id.toString()).then(res => {
             this.myContent();
@@ -81,7 +79,7 @@ export class HomeComponent implements  OnInit {
         })
     }
 
-    searchByGenre(category: string): void {
+    searchByCategory(category: string): void {
         this.myContents = false;
         this.divHeight = "420px";
         this.reviewService.getAllReviewsByCategory(category).then(res => {
@@ -99,7 +97,7 @@ export class HomeComponent implements  OnInit {
         }
     }
 
-    createMovie(product: string, link: string, brand: string, category: string): void {
+    createReview(product: string, link: string, brand: string, category: string): void {
         if (product != "" && link != "" && brand != "" && category != "") {
             this.userService.getLogUserInfo().then(res => {
                 console.log("demole")
@@ -241,14 +239,14 @@ export class HomeComponent implements  OnInit {
         }
     }
 
-    getMovieToEdit(review: Review) {
+    getReviewToEdit(review: Review) {
         this.editingid = review._id;
         this.editingproduct = review.product;
         this.editingcategory = review.category;
         this.editingbrand = review.brand;
     }
 
-    editMovie(): void {
+    editReview(): void {
         let review = new Review();
         review = {
             _id: this.editingid,
