@@ -6,9 +6,10 @@ import {AppRoutingModule} from './app-routing.module'
 import { HomeComponent } from './components/home.component';
 import { AppComponent } from './components/app.component';
 import { UserService } from './services/user.service';
-import {MovieService} from "./services/movie.service";
+import {ReviewService} from "./services/reviews.service";
 import {CustExtBrowserXhr} from "./cust-ext-browser-xhr";
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
+import {PromoService} from "./services/promo.service";
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [UserService, MovieService,CustExtBrowserXhr],
+  providers: [UserService, ReviewService,CustExtBrowserXhr, PromoService],
   bootstrap: [AppComponent]
 
 })
