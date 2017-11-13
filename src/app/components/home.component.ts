@@ -3,12 +3,17 @@ import{Review} from '../models/Review'
 import {UserService} from '../services/user.service'
 import {User} from "../models/User";
 import {ReviewService} from "../services/reviews.service";
+import {Router} from "@angular/router";
+import {PromoService} from "../services/promo.service";
+import {Promo} from "../models/Promo";
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+
 
 @Component ({
     selector: 'home',
     templateUrl: '../htmls/home.component.html',
     styleUrls: ['../css/home.component.css','../css/homeStyle.component.css','../css/pagination.css','../css/bootstrap.min.css','../css/dropdownmenu.css'],
-    providers: [UserService, ReviewService]
+    providers: [UserService, ReviewService, PromoService]
 })
 
 export class HomeComponent implements  OnInit {
@@ -30,11 +35,16 @@ export class HomeComponent implements  OnInit {
     public isLogged: boolean;
     public myContents: boolean;
     public divHeight: string;
+    public availablePromos: Promo[];
+    public showingReview: Review[];
+    public videoSrc: SafeResourceUrl;
+    public allpromos: Promo[];
 
 
-    constructor(private userService: UserService, private reviewService: ReviewService) {
+    constructor(private userService: UserService, private reviewService: ReviewService, private router:Router, private promoService: PromoService, private sanitizer: DomSanitizer) {
         this.searcherFlag = true;
         this.myContents = false;
+        this.videoSrc="";
         this.divHeight = "420px";
         this.userService.getLogUserInfo().then(res => {
             if (res.status.toString().indexOf("200") == -1) {
@@ -50,6 +60,10 @@ export class HomeComponent implements  OnInit {
             this.brands = ["Nike", "Adidas", "Puma", "Guess", "Lacoste", "Victoria's Secret", "Zara", "Microsoft" ,"Stradivarius", "Asus", "HP", "BMW", "Mercedes Benz"];
 
                 this.refreshContent();
+        });
+        this.showingReview=[];
+        this.promoService.getAllPromos().then(res=>{
+            this.allpromos=res;
         })
 
     }
@@ -57,11 +71,26 @@ export class HomeComponent implements  OnInit {
     ngOnInit(): void {
     }
 
+    searchPromos(searchTerm: string, review: Review): void {
+        this.promoService.searchPromo(searchTerm).then(res => {
+            this.availablePromos = res;
+            this.refreshContent();
+        });
+        review.youtubeLink = '//www.youtube.com/embed/'+review.youtubeLink.split('=')[1];
+        this.videoSrc= this.sanitizer.bypassSecurityTrustResourceUrl(review.youtubeLink);
+        this.showingReview[0] = review;
+
+        console.log(this.showingReview);
+    }
+
     search(searchTerm: string): void {
         this.reviewService.searchReviews(searchTerm).then(res => {
             this.allReviews = res;
             console.log(this.allReviews);
             this.refreshContent();
+        });
+        this.promoService.searchPromo(searchTerm).then(res => {
+            this.allpromos = res;
         })
     }
 
@@ -85,6 +114,9 @@ export class HomeComponent implements  OnInit {
         this.reviewService.getAllReviewsByCategory(category).then(res => {
             this.allReviews = res;
             this.refreshContent();
+        });
+        this.promoService.getAllPromosByCategory(category).then(res=> {
+            this.allpromos = res;
         })
     }
 
@@ -196,6 +228,7 @@ export class HomeComponent implements  OnInit {
                 })
             }
         })
+        this.allpromos = [];
     }
 
 
@@ -219,6 +252,8 @@ export class HomeComponent implements  OnInit {
             i++;
         }
         this.lastPage = 1;
+
+        this.allpromos=[];
 
         this.getRowsFromAllMovies(1);
     }
@@ -283,5 +318,8 @@ export class HomeComponent implements  OnInit {
         document.getElementById("confirmModal").className = ("modal fade in hide errorModal");
 
     }
+
+
+
 
 }

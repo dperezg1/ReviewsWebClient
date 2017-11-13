@@ -30,6 +30,13 @@ export class PromoService {
             .catch(this.handleError);
     }
 
+    getAllPromos(): Promise<Promo[]> {
+        return this.http.get(this.reviewUrl + "/promos", {headers: this.headers})
+            .toPromise()
+            .then(res => res.json() as Promo[])
+            .catch(this.handleError);
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error.message || error);
