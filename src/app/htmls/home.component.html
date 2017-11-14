@@ -13,14 +13,14 @@
         <div class="collapse navbar-collapse col-xs-6 col-md-6 col-lg-6" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li *ngIf="isLogged" class="nav-item navbuttons dropdown">
-                <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown">Content</a>
+                <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Content</a>
                 <ul class="dropdown-menu back">
                   <li><a (click)="myContent()" id="myContent" class="text-white" >My Content</a></li>
                   <li><a id="upload" class="text-white"  data-toggle="modal" data-target="#uploadModal" >Upload</a></li>
                 </ul>
               </li>
               <li class="nav-item navbuttons dropdown">
-                <a class="dropdown-toggle nav-link text-white" data-toggle="dropdown">Categories</a>
+                <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Categories</a>
                 <ul class="dropdown-menu back">
                   <li *ngFor="let category of categories"><a (click)="searchByCategory(category)" class="text-white">{{category}}</a></li>
                 </ul>
@@ -279,7 +279,7 @@
         <button type="button" class="close" data-dismiss="modal">×</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="overflow:scroll;">
 
 
         <div *ngFor="let review of showingReview" class="container" style="display: inline-block;">
@@ -294,7 +294,11 @@
 
             <div class="details col-md-6">
               <h1 class="product-title">{{review.youtubeName}}</h1>
-              <h4 class="price">{{review.owner_username}} </h4>
+              <div class="row">
+                <h4 class="price">{{review.owner_username}} </h4>
+                <i *ngIf="showingReview[0].verifiedUser" id="likeass2" class="glyphicon glyphicon-ok-sign" style="font-size: 20px; color: limegreen"></i> <div id="likeas2s-bas3"></div>
+              </div>
+
               <h4>{{review.youtubeDate.split("T")[0]}}</h4>
               <h4 class="price"><span>Product:</span> {{review.product}}</h4>
               <h4 class="price"><span>Brand:</span> {{review.brand}}</h4>

@@ -197,7 +197,10 @@ export class HomeComponent implements  OnInit {
             this.allReviews = res;
             console.log(res);
             this.refreshContent();
-        })
+        });
+        this.promoService.getAllPromos().then(res=>{
+            this.allpromos=res;
+        });
     }
 
     nextPage(): void {
@@ -252,8 +255,6 @@ export class HomeComponent implements  OnInit {
             i++;
         }
         this.lastPage = 1;
-
-        this.allpromos=[];
 
         this.getRowsFromAllMovies(1);
     }
