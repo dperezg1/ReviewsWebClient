@@ -3,56 +3,56 @@
 <head>
   <script src="../models/Review.ts"></script>
 </head>
-    <meta charset="UTF-8">
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-fixed-top bg-primary py-3 navpersonal">
-        <div class="container" >
-          <div class=" collapse navbar-collapse col-xs-1 col-md-1 col-lg-1">
-            <a class="navbar-brand text-white" (click)="home()"> Home </a>
-          </div>
+<meta charset="UTF-8">
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-fixed-top bg-primary py-3 navpersonal">
+  <div class="container" >
+    <div class=" collapse navbar-collapse col-xs-1 col-md-1 col-lg-1">
+      <a class="navbar-brand text-white" (click)="home()"> Home </a>
+    </div>
 
-        <div class="collapse navbar-collapse col-xs-6 col-md-6 col-lg-6" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li *ngIf="isLogged" class="nav-item navbuttons dropdown">
-                <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Content</a>
-                <ul class="dropdown-menu back">
-                  <li><a (click)="myContent()" id="myContent" class="text-white" >My Content</a></li>
-                  <li><a id="upload" class="text-white"  data-toggle="modal" data-target="#uploadModal" >Upload</a></li>
-                </ul>
-              </li>
-              <li class="nav-item navbuttons dropdown">
-                <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Categories</a>
-                <ul class="dropdown-menu back">
-                  <li *ngFor="let category of categories"><a (click)="searchByCategory(category)" class="text-white">{{category}}</a></li>
-                </ul>
-              </li>
-                </ul>
+    <div class="collapse navbar-collapse col-xs-6 col-md-6 col-lg-6" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li *ngIf="isLogged" class="nav-item navbuttons dropdown">
+          <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Content</a>
+          <ul class="dropdown-menu back">
+            <li><a (click)="myContent()" id="myContent" class="text-white" >My Content</a></li>
+            <li><a id="upload" class="text-white"  data-toggle="modal" data-target="#uploadModal" >Upload</a></li>
+          </ul>
+        </li>
+        <li class="nav-item navbuttons dropdown">
+          <a class="dropdown-toggle navbar-brand text-white" data-toggle="dropdown">Categories</a>
+          <ul class="dropdown-menu back">
+            <li *ngFor="let category of categories"><a (click)="searchByCategory(category)" class="text-white">{{category}}</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        </div>
-          <div class="nav navbar-right col-xs-5 col-md-5 col-lg-5">
-            <ul class="nav ">
-              <li class="searchField">
-                <input #searchTerm type="text" class="form-control nav-item navbuttons searcher " placeholder="Search">
-              </li>
-              <li >
-                <button type="submit" (click)="search(searchTerm.value)" class="btn btn-primary nav-item navbuttons">Submit</button>
-              </li>
-              <li>
-                <a href="http://localhost:3000/login" id="loginButton" class="btn btn-success nav-item navbuttons">Log In</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-    </nav>
+    </div>
+    <div class="nav navbar-right col-xs-5 col-md-5 col-lg-5">
+      <ul class="nav ">
+        <li class="searchField">
+          <input #searchTerm type="text" class="form-control nav-item navbuttons searcher " placeholder="Search">
+        </li>
+        <li >
+          <button type="submit" (click)="search(searchTerm.value)" class="btn btn-primary nav-item navbuttons">Submit</button>
+        </li>
+        <li>
+          <a href="http://localhost:3000/login" id="loginButton" class="btn btn-success nav-item navbuttons">Log In</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 
 <br>
 
 <body class="carouselBottomSpace">
 
-<h2 align="center" style="margin-top: 10%"> Available Promotions: </h2>
+<h2 *ngIf="myContents==false" align="center" style="margin-top: 10%"> Available Promotions: </h2>
 
 
-<div class="row container form-group product-chooser" style="padding-left: 15pt; margin-left:29pt;">
+<div *ngIf="myContents==false" class="row container form-group product-chooser" style="padding-left: 15pt; margin-left:29pt;">
 
   <div *ngFor="let promo of allpromos" class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 5pt; margin: 0pt;">
     <div class="product-chooser-item" style="padding: 0pt; margin: 0pt">
@@ -70,59 +70,61 @@
 
 </div>
 
-<h2 align="center"> Reviews: </h2>
+<h2 *ngIf="myContents==false" align="center"> Reviews: </h2>
+
+<h2 *ngIf="myContents==true" align="center" style="margin-top: 5%"></h2>
 
 <main class="container">
-    <section class="movies" id="movies">
-       <br>
-       <br>
-        <div class="row" id="row1">
-            <div *ngFor="let movie1 of showingMoviesRow1"  class="col-lg-3 col-md-4 col-sm-6">
-                <article class="card" [style.height]="divHeight">
-                    <header class="title-header">
-                        <h3>{{movie1.youtubeName}}</h3>
-                    </header>
-                    <div class="card-block">
-                        <div class="img-card">
-                            <img src={{movie1.youtubeImage}} alt="Movie" class="w-100" />
-                        </div>
-                        <p class="tagline card-text text-xs-center">Product: {{movie1.product}}</p>
-                        <p class="tagline card-text text-xs-center">Brand: {{movie1.brand}}</p>
-                        <p class="tagline card-text text-xs-center">Category: {{movie1.category}}</p>
-                        <p class="tagline card-text text-xs-center">verified: {{movie1.verifiedUser}}</p>
-                        <a class="btn btn-primary btn-block text-white" data-toggle="modal" (click)="searchPromos(movie1.brand,movie1)" data-target="#myModal"><i class="fa fa-eye"></i> Watch Now</a>
-                        <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie1)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
-                        <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie1)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
-                    </div>
-                </article>
+  <section class="movies" id="movies">
+    <br>
+    <br>
+    <div class="row" id="row1">
+      <div *ngFor="let movie1 of showingMoviesRow1"  class="col-lg-3 col-md-4 col-sm-6">
+        <article class="card" [style.height]="divHeight">
+          <header class="title-header">
+            <h3>{{movie1.youtubeName}}</h3>
+          </header>
+          <div class="card-block">
+            <div class="img-card">
+              <img src={{movie1.youtubeImage}} alt="Movie" class="w-100" />
             </div>
-        </div>
-      <br>
-
-
-      <br>
-      <div class="row" id="row2">
-        <div *ngFor="let movie2 of showingMoviesRow2"  class="col-lg-3 col-md-4 col-sm-6">
-          <article class="card" [style.height]="divHeight">
-            <header class="title-header">
-              <h3>{{movie2.youtubeName}}</h3>
-            </header>
-            <div class="card-block">
-              <div class="img-card">
-                <img src={{movie2.youtubeImage}} alt="Movie" class="w-100" />
-              </div>
-              <p class="tagline card-text text-xs-center">Product: {{movie2.product}}</p>
-              <p class="tagline card-text text-xs-center">Brand: {{movie2.brand}}</p>
-              <p class="tagline card-text text-xs-center">Category: {{movie2.category}}</p>
-              <p class="tagline card-text text-xs-center">verified: {{movie2.verifiedUser}}</p>
-              <a class="btn btn-primary btn-block text-white" (click)="searchPromos(movie2.brand,movie2)" data-toggle="modal" data-target="#myModal" ><i class="fa fa-eye"></i> Watch Now</a>
-              <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie2)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
-              <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie2)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
-            </div>
-          </article>
-        </div>
+            <p class="tagline card-text text-xs-center">Product: {{movie1.product}}</p>
+            <p class="tagline card-text text-xs-center">Brand: {{movie1.brand}}</p>
+            <p class="tagline card-text text-xs-center">Category: {{movie1.category}}</p>
+            <p class="tagline card-text text-xs-center">verified: {{movie1.verifiedUser}}</p>
+            <a class="btn btn-primary btn-block text-white" data-toggle="modal" (click)="searchPromos(movie1.brand,movie1)" data-target="#myModal"><i class="fa fa-eye"></i> Watch Now</a>
+            <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie1)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+            <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie1)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+          </div>
+        </article>
       </div>
-    </section>
+    </div>
+    <br>
+
+
+    <br>
+    <div class="row" id="row2">
+      <div *ngFor="let movie2 of showingMoviesRow2"  class="col-lg-3 col-md-4 col-sm-6">
+        <article class="card" [style.height]="divHeight">
+          <header class="title-header">
+            <h3>{{movie2.youtubeName}}</h3>
+          </header>
+          <div class="card-block">
+            <div class="img-card">
+              <img src={{movie2.youtubeImage}} alt="Movie" class="w-100" />
+            </div>
+            <p class="tagline card-text text-xs-center">Product: {{movie2.product}}</p>
+            <p class="tagline card-text text-xs-center">Brand: {{movie2.brand}}</p>
+            <p class="tagline card-text text-xs-center">Category: {{movie2.category}}</p>
+            <p class="tagline card-text text-xs-center">verified: {{movie2.verifiedUser}}</p>
+            <a class="btn btn-primary btn-block text-white" (click)="searchPromos(movie2.brand,movie2)" data-toggle="modal" data-target="#myModal" ><i class="fa fa-eye"></i> Watch Now</a>
+            <a *ngIf="myContents" data-toggle="modal" data-target="#editModal"  (click)="getReviewToEdit(movie2)"  class="btn btn-success btn-block text-white"><i class="fa fa-pencil "></i> Edit</a>
+            <a *ngIf="myContents" (click)="saveReviewToDeleteAndOpenConfirmModal(movie2)" class="btn btn-danger btn-block text-white"><i class="fa fa-trash "></i> Trash</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 </main>
 <br>
 </body>
@@ -132,8 +134,8 @@
 
 <footer>
 
-    <div class="container-fluid bg-primary py-3">
-      <div class="innerpagination">
+  <div class="container-fluid bg-primary py-3">
+    <div class="innerpagination">
       <div class="pagination" >
         &nbsp;<a (click)="prevPage()" class="pagerButton">«</a>
         <a (click)="changePage(1)" id="1" class="strong">1</a>
@@ -141,15 +143,15 @@
 
         &nbsp;<a (click)="nextPage()" class="pagerButton">»</a>
       </div>
-      </div>
     </div>
+  </div>
 </footer>
 <!--/.footer-->
 <!--/.footer-bottom-->
 
 
-<div #uploadModal class="modal fade upload" id="uploadModal">
-  <div class="modal-content">
+<div #uploadModal class="modal fade upload" id="uploadModal" style="width: 100%; height: 100%; z-index: 10000000000000000000000000; position: fixed">
+  <div class="modal-content"  style="width: 40%; height: 65%; margin-left: 0%; margin-top: 10%">
 
     <div class="modal-body">
       <button id="uploadCloser" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -194,8 +196,8 @@
   </div>
 </div>
 
-<div #editModal class="modal fade upload" id="editModal">
-  <div class="modal-content">
+<div #editModal class="modal fade upload" id="editModal" style="width: 100%; height: 100%; z-index: 10000000000000000000000000; position: fixed">
+  <div class="modal-content" style="width: 40%; height: 50%; margin-left: 0%; margin-top: 10%">
 
     <div class="modal-body">
       <button id="uploadCloser1" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -245,7 +247,7 @@
       </div>
       <div class="modal-footer text-center">
         <div class="form-inline text-center">
-            <button (click)="closeErrorModal()" class="btn btn-danger btn-md">Ok</button>
+          <button (click)="closeErrorModal()" class="btn btn-danger btn-md">Ok</button>
 
         </div>
       </div>
@@ -273,72 +275,72 @@
 </div><!-- /.modal -->
 
 <div id="myModal" class="modal fade" role="dialog" style="width: 100%; height: 100%; z-index: 10000000000000000000000000; position: fixed">
-    <!-- Modal content-->
-    <div class="modal-content" style="width: 100%; height: 100%">
-      <div class="modal-header text-center">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-      </div>
+  <!-- Modal content-->
+  <div class="modal-content" style="width: 100%; height: 100%">
+    <div class="modal-header text-center">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+    </div>
 
-      <div class="modal-body" style="overflow:scroll;">
+    <div class="modal-body" style="overflow:scroll;">
 
 
-        <div *ngFor="let review of showingReview" class="container" style="display: inline-block;">
-          <div class="row">
+      <div *ngFor="let review of showingReview" class="container" style="display: inline-block;">
+        <div class="row">
 
-            <div class="col-md-6">
-              <div class="vid">
-                <iframe #video id="video" width="560" height="315" [src]="videoSrc" allowfullscreen=""></iframe>
-              </div><!--./vid -->
+          <div class="col-md-6">
+            <div class="vid">
+              <iframe #video id="video" width="560" height="315" [src]="videoSrc" allowfullscreen=""></iframe>
+            </div><!--./vid -->
 
-            </div><!--.col -->
+          </div><!--.col -->
 
-            <div class="details col-md-6">
-              <h1 class="product-title">{{review.youtubeName}}</h1>
-              <div class="row">
-                <h4 class="price">{{review.owner_username}} </h4>
-                <i *ngIf="showingReview[0].verifiedUser" id="likeass2" class="glyphicon glyphicon-ok-sign" style="font-size: 20px; color: limegreen"></i> <div id="likeas2s-bas3"></div>
-              </div>
-
-              <h4>{{review.youtubeDate.split("T")[0]}}</h4>
-              <h4 class="price"><span>Product:</span> {{review.product}}</h4>
-              <h4 class="price"><span>Brand:</span> {{review.brand}}</h4>
-              <h4 class="price"><span>Category:</span> {{review.category}}</h4>
-              <div class="row" style="margin-left: 8px">
-                <i id="like2" class="glyphicon glyphicon-thumbs-up" style="font-size: 20px;">/{{review.goodRate}}</i> <div id="like2-bs3"></div>
-                <i id="dislike2" class="glyphicon glyphicon-thumbs-down"style="font-size: 20px;">/{{review.badRate}}</i> <div id="dislike2-bs3"></div>
-              </div>
+          <div class="details col-md-6">
+            <h1 class="product-title">{{review.youtubeName}}</h1>
+            <div class="row">
+              <h4 class="price">{{review.owner_username}} </h4>
+              <i *ngIf="showingReview[0].verifiedUser" id="likeass2" class="glyphicon glyphicon-ok-sign" style="font-size: 20px; color: limegreen"></i> <div id="likeas2s-bas3"></div>
             </div>
 
-
-
-          </div><!--./row -->
-
-        </div><!--./container -->
-
-        <h1 align="center"> Related Promotions </h1>
-
-
-        <div class="row container form-group product-chooser" style="padding-left: 15pt; margin-left:29pt; margin-top: 0; padding-top: 0;">
-
-          <div *ngFor="let promo of availablePromos" class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 5pt; margin: 0pt;">
-            <div class="product-chooser-item" style="padding: 0pt; margin: 0pt">
-              <img src="{{promo.imageLink}}" class="img-rounded center col-xs-12 col-sm-12 col-md-12 col-lg-12" alt="Desktop">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <span class="title">{{promo.product}}</span>
-                <span class="description"><b>brand:</b> {{promo.brand}}</span>
-                <p><b>{{promo.details}}</b> - <a target="_blank" href="{{promo.link}}">BUY NOW</a></p>
-                <p class="promocode"><b>Promo code:</b> {{promo.promoCode}}</p>
-                <input type="radio" name="product" value="desktop">
-              </div>
-              <div class="clear"></div>
+            <h4>{{review.youtubeDate.split("T")[0]}}</h4>
+            <h4 class="price"><span>Product:</span> {{review.product}}</h4>
+            <h4 class="price"><span>Brand:</span> {{review.brand}}</h4>
+            <h4 class="price"><span>Category:</span> {{review.category}}</h4>
+            <div class="row" style="margin-left: 8px">
+              <i id="like2" class="glyphicon glyphicon-thumbs-up" style="font-size: 20px;">/{{review.goodRate}}</i> <div id="like2-bs3"></div>
+              <i id="dislike2" class="glyphicon glyphicon-thumbs-down"style="font-size: 20px;">/{{review.badRate}}</i> <div id="dislike2-bs3"></div>
             </div>
           </div>
 
+
+
+        </div><!--./row -->
+
+      </div><!--./container -->
+
+      <h1 align="center"> Related Promotions </h1>
+
+
+      <div class="row container form-group product-chooser" style="padding-left: 15pt; margin-left:29pt; margin-top: 0; padding-top: 0;">
+
+        <div *ngFor="let promo of availablePromos" class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 5pt; margin: 0pt;">
+          <div class="product-chooser-item" style="padding: 0pt; margin: 0pt">
+            <img src="{{promo.imageLink}}" class="img-rounded center col-xs-12 col-sm-12 col-md-12 col-lg-12" alt="Desktop">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <span class="title">{{promo.product}}</span>
+              <span class="description"><b>brand:</b> {{promo.brand}}</span>
+              <p><b>{{promo.details}}</b> - <a target="_blank" href="{{promo.link}}">BUY NOW</a></p>
+              <p class="promocode"><b>Promo code:</b> {{promo.promoCode}}</p>
+              <input type="radio" name="product" value="desktop">
+            </div>
+            <div class="clear"></div>
+          </div>
         </div>
 
       </div>
 
     </div>
+
+  </div>
 
 </div>
 
